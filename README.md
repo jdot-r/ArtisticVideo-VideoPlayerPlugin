@@ -7,7 +7,14 @@
 
 #####Download CharPlayer&The Example TXT(Bad Apple):http://zxda.mudegg.net/CharPlayer&ExampleTXT.zip
 #####Put the "badapple.txt to /Art/ArtisticText/GetFiles" and write the config file like this:
-
+  x: 200
+  "y": 4
+  z: 200
+  world: world
+  text: badapple.txt
+  Height: 61
+  blocks:
+    ' ': 155
 
 An example of the plugin(Bad Apple :-D)
 
