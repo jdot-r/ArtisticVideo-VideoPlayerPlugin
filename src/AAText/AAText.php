@@ -28,18 +28,21 @@ class AAText extends PluginBase implements Listener
         @mkdir($this->getServer()->getDataPath() . "/plugins/Art/ArtisticText/");
         @mkdir($this->getServer()->getDataPath() . "/plugins/Art/ArtisticText/GetFiles/");
         $this->cfg = new Config($path . "Config.yml", Config::YAML);
-        if (!$this->cfg->exists("视频刷新率(秒每次)")) {
-            $this->cfg->set("视频刷新率(秒每次)", 0.05);
+        if (!$this->cfg->exists("VideoRefreshRate(SecondPerTime)")) {
+            $this->cfg->set("VideoRefreshRate(SecondPerTime)", 0.05);
             $this->cfg->save();
         }
-        if (!$this->cfg->exists("视频播放列表及坐标(如需关闭随便填不存在的txt文件即可)")) {
-            $this->cfg->set("视频播放列表及坐标(如需关闭随便填不存在的txt文件即可)", array("x"=>0,"y"=> 0,"z"=> 0,"world"=>"world", "text"=>"233.txt","Height" =>61,"blocks"=>array(" "=>155)));
+        if (!$this->cfg->exists("VideoSettings(WriteATextThatDoesNotExistToTurnOff)")) {
+            $this->cfg->set("VideoSettings(WriteATextThatDoesNotExistToTurnOff)", array("x"=>0,"y"=> 0,"z"=> 0,"world"=>"world", "text"=>"badapple.txt","Height" =>61,"blocks"=>array(" "=>155)));
             $this->cfg->save();
         }
-        $this->video = $this->cfg->get("视频播放列表及坐标(如需关闭随便填不存在的txt文件即可)");
-        $this->tmpcfg = $this->cfg->get("视频刷新率(秒每次)") * 20;
+        $this->video = $this->cfg->get("VideoSettings(WriteATextThatDoesNotExistToTurnOff)");
+        $this->tmpcfg = $this->cfg->get("VideoRefreshRate(SecondPerTime)") * 20;
         $this->getServer()->getScheduler()->scheduleRepeatingTask(new CallBackTask([$this, "AddFloating"]), $this->tmpcfg);
         $this->gif();
+        foreach($this->video["blocks"] as $key=>$value){
+            $this->gu = $key;
+        }
     }
 
 
@@ -57,14 +60,14 @@ class AAText extends PluginBase implements Listener
                     for ($u = 0; $u < $line; $u++) {
                         for ($o = 0; $o < $co; $o++) {
                             $s = mb_substr($hu[$line - $u - 1], $o, 1);
-                            if ($s == " ") {
-                                $this->levelt->setBlock(new Position($this->video["x"] + $o, $this->video["y"] + $u, $this->video["z"], $this->levelt), $this->block[1], true, false);
-                            } else {
-                                $this->levelt->setBlock(new Position($this->video["x"] + $o, $this->video["y"] + $u, $this->video["z"], $this->levelt), $this->block[2], true, false);
-                            }
+                                if ($s == $this->gu) {
+                                    $this->levelt->setBlock(new Position($this->video["x"] + $o, $this->video["y"] + $u, $this->video["z"], $this->levelt), $this->block["133"], true, false);
+                                } else {
+                                    $this->levelt->setBlock(new Position($this->video["x"] + $o, $this->video["y"] + $u, $this->video["z"], $this->levelt), $this->block["233"], true, false);
+                                }
                         }
                     }
-                } else {
+                }else {
                     $argg['nowp'] = 0;
                     $i = 0;
                 }
@@ -86,10 +89,11 @@ class AAText extends PluginBase implements Listener
                 'text' => $text
             );
             $this->Anma[$iii] = $array;
-            $item = Item::get(155);
-            $this->block[1] = $item->getblock();
+            foreach($this->video["blocks"] as $key=>$value){
+            $item = Item::get($value);
+            $this->block["133"] = $item->getblock();}
             $item = Item::get(159, 15);
-            $this->block[2] = $item->getblock();
+            $this->block["233"] = $item->getblock();
         }
     }
 
