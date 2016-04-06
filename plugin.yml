@@ -1,0 +1,10 @@
+name: ArtisticText
+version: "1.0.0"
+api:
+- 1.9.0
+author: Mud_Egg
+main: AAText\AAText
+permissions:
+ mudegg.plugin.awe:
+  description: "mudegg.plugin.awe"
+  default: op
