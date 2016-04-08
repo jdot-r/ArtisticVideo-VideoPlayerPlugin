@@ -14,7 +14,8 @@ use pocketmine\math\Vector3;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use AAText\CallbackTask;
-
+use AAText\DeleteParticleTask;
+use pocketmine\level\particle\FloatingTextParticle;
 class AAText extends PluginBase implements Listener
 {
 
@@ -33,13 +34,14 @@ class AAText extends PluginBase implements Listener
             $this->cfg->save();
         }
         if (!$this->cfg->exists("VideoSettings(WriteATextThatDoesNotExistToTurnOff)")) {
-            $this->cfg->set("VideoSettings(WriteATextThatDoesNotExistToTurnOff)", array("x"=>0,"y"=> 0,"z"=> 0,"world"=>"world", "text"=>"badapple.txt","Height" =>61,"blocks"=>array(" "=>155)));
+            $this->cfg->set("VideoSettings(WriteATextThatDoesNotExistToTurnOff)", array("mode(floating/block)"=>"floating","x"=>1,"y"=> 1,"z"=> 1,"world"=>"world", "text"=>"badapple.txt","Height" =>61,"blocks"=>array(" "=>155),"default"=>"159,15"));
             $this->cfg->save();
         }
         $this->video = $this->cfg->get("VideoSettings(WriteATextThatDoesNotExistToTurnOff)");
         $this->tmpcfg = $this->cfg->get("VideoRefreshRate(SecondPerTime)") * 20;
         $this->getServer()->getScheduler()->scheduleRepeatingTask(new CallBackTask([$this, "AddFloating"]), $this->tmpcfg);
         $this->gif();
+        $this->ppos = new Position($this->video["x"], $this->video["y"], $this->video["z"], $this->levelt);
         foreach($this->video["blocks"] as $key=>$value){
             $this->gu = $key;
         }
@@ -54,6 +56,7 @@ class AAText extends PluginBase implements Listener
                 $argg = $arg['text'];
                 $i = $argg['nowp'] + 1;
                 if ($i <= $argg['sp']) {
+                    if($this->video["mode(floating/block)"] == "block"){
                     $hu = explode("\n", $argg['arg'][$i]);
                     $co = strlen($hu[1]);
                     $line = count($hu);
@@ -66,6 +69,10 @@ class AAText extends PluginBase implements Listener
                                     $this->levelt->setBlock(new Position($this->video["x"] + $o, $this->video["y"] + $u, $this->video["z"], $this->levelt), $this->block["233"], true, false);
                                 }
                         }
+                    }}else{
+                        $particle = new FloatingTextParticle ($this->ppos, "", $argg['arg'][$i]);
+                        $this->ppos->getLevel()->addParticle($particle);
+                        Server::getInstance()->getScheduler()->scheduleDelayedTask(new DeleteParticleTask ($particle, $this->levelt), $this->tmpcfg + 1);
                     }
                 }else {
                     $argg['nowp'] = 0;
@@ -92,7 +99,7 @@ class AAText extends PluginBase implements Listener
             foreach($this->video["blocks"] as $key=>$value){
             $item = Item::get($value);
             $this->block["133"] = $item->getblock();}
-            $item = Item::get(159, 15);
+            $item = Item::get($this->video["default"]);
             $this->block["233"] = $item->getblock();
         }
     }
