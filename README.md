@@ -9,18 +9,18 @@
 
 #####Download CharPlayer&The Example TXT(Bad Apple):http://zxda.mudegg.net/CharPlayer&ExampleTXT.zip
 #####Put the "badapple.txt to /Art/ArtisticText/GetFiles" and write the config file like this:
-VideoRefreshRate(SecondPerTime): 0.050000
-VideoSettings(WriteATextThatDoesNotExistToTurnOff):
-  mode(floating/block): block
-  x: 10
-  "y": 4
-  z: 10
-  world: world
-  text: badapple.txt
-  Height: 61
-  blocks:
-    ' ': 155
-  default: "159,15"
+VideoRefreshRate(SecondPerTime): 0.050000<br>
+VideoSettings(WriteATextThatDoesNotExistToTurnOff):<br>
+  mode(floating/block): block<br>
+  x: 10<br>
+  "y": 4<br>
+  z: 10<br>
+  world: world<br>
+  text: badapple.txt<br>
+  Height: 61<br>
+  blocks:<br>
+    ' ': 155<br>
+  default: "159,15"<br>
 
 An example of the plugin(Bad Apple :-D)
 
