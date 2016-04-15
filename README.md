@@ -25,3 +25,5 @@ VideoSettings(WriteATextThatDoesNotExistToTurnOff):<br>
 An example of the plugin(Bad Apple :-D)
 
  ![image](http://zxda.mudegg.net/badapple.gif)
+
+####HOW-TO-USE:https://www.youtube.com/watch?v=7nUwfnyQCLg
